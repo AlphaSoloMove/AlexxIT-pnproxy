@@ -124,6 +124,8 @@ func handleRedirect(params url.Values) http.HandlerFunc {
 
 func handleTransport(transport http.RoundTripper) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		r.URL.Scheme = "http"
+		r.URL.Host = r.Host
 		r.Header.Set("Host", r.Host)
 
 		res, err := transport.RoundTrip(r)
