@@ -5,7 +5,8 @@ import (
 	"strings"
 )
 
-var static = map[string][]net.IP{}
+var staticSuffixes []string
+var staticIPs [][]net.IP
 
 func addStaticIP(name string, addrs []string) {
 	var ips []net.IP
@@ -14,14 +15,15 @@ func addStaticIP(name string, addrs []string) {
 	}
 	// use suffix point, because all DNS queries has it
 	// use prefix point, because support subdomains by default
-	static["."+name+"."] = ips
+	staticSuffixes = append(staticSuffixes, "."+name+".")
+	staticIPs = append(staticIPs, ips)
 }
 
 func lookupStaticIP(name string) ([]net.IP, error) {
 	name = "." + name
-	for suffix, items := range static {
+	for i, suffix := range staticSuffixes {
 		if strings.HasSuffix(name, suffix) {
-			return items, nil
+			return staticIPs[i], nil
 		}
 	}
 	return nil, nil
