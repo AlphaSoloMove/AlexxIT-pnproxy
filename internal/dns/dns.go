@@ -61,7 +61,7 @@ func serve(address string) {
 		m.SetReply(msg)
 
 		if msg.Opcode == dns.OpcodeQuery {
-			parseQuery(m)
+			parseQuery(m, wr.RemoteAddr())
 		}
 
 		_ = wr.WriteMsg(m)
@@ -72,7 +72,7 @@ func serve(address string) {
 	}
 }
 
-func parseQuery(query *dns.Msg) {
+func parseQuery(query *dns.Msg, remoteAddr net.Addr) {
 	for _, question := range query.Question {
 		if question.Qtype == dns.TypeA {
 			ips, _ := lookupStaticIP(question.Name)
@@ -80,6 +80,8 @@ func parseQuery(query *dns.Msg) {
 			if ips == nil {
 				ips, _ = net.LookupIP(question.Name)
 			}
+
+			log.Trace().Msgf("[dns] query remote_addr=%s name=%s ips=%s", remoteAddr, question.Name, ips)
 
 			for _, ip := range ips {
 				if ip.To4() != nil {
