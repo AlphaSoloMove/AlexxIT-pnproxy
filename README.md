@@ -1,4 +1,4 @@
-## pnproxy
+.## pnproxy
 
 **pnproxy** - Plug and Proxy is a simple home proxy for managing Internet traffic.
 
