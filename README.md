@@ -1,8 +1,7 @@
 **pnproxy** - Plug and Proxy is a simple home proxy for managing Internet traffic 
 
 Features:
-
-- work on all devices in the local network without additional settings
+thout additional settings
 - proxy settings for selected sites only
 - ad blocking support (like AdGuard)
 
